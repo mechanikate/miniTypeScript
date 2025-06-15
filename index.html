@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<title>monkeyTS</title>
+		<script src="js/dataset.js" defer></script>	
+		<script src="js/main.js" defer></script>
+		<link rel="stylesheet" href="css/style.css" />
+	</head>
+	<body>
+		<div class="display-text center-text">
+			<h1><span id="preTypescriptText">monkey</span><span id="typescriptText">TS</span></h1>
+		</div>
+		<div class="typing typing-wrapper">
+			<input type="text" id="typed" class="typing typing-typed" />
+			<input type="text" id="toType" disabled class="typing typing-placeholder" value="hello there what is going on" />
+		</div>
+		<br />
+		<br />
+		<div class="display display-text display-wrapper center-text">
+			<span class="cps-wrapper">
+				CPM: <span id="charPerSecond">0</span>
+			</span> |
+			<span class="wpm-wrapper">
+				WPM: <span id="wordsPerMin">0</span> (PB: <span id="pbWordsPerMin">0.000</span>)
+			</span>
+		</div>
+	</body>
+</html>

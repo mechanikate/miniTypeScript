@@ -1,0 +1,46 @@
+.typing-wrapper, .typing-typed, .typing-placeholder, .display-text {
+	font-family: "Courier New";
+}
+.center-text {
+	text-align: center;
+}
+.typing-typed {
+  position: absolute;
+  font-size: 25px;
+  height: 40px;
+  width: 75%;
+  left: 12.5%;
+  top: 15%;
+  opacity: 0.5;
+  z-index: 999;
+}
+
+.typing-placeholder {
+  position: absolute;
+  font-size: 25px;
+  pointer-events: none;
+  left: 12.5%;
+  top: 15%;
+  width: 75%;
+  height: 40px;
+}
+.display-wrapper {
+	position: absolute;
+	font-size: 20px;
+	width: 75%;
+	left: 12.5%;
+	top: 25%;
+	opacity: 0.75;
+}
+#typescriptText {
+	background-color: #007acc;
+	color: #ffffff;
+}
+#preTypescriptText {
+	color: #686868;
+}
+html, #typed, #toType {
+	color: #ffffff;
+	background-color: #2a2a2a;
+}
+

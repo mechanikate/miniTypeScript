@@ -60,12 +60,13 @@ window.onload = function() { // This is where a lot happens, so step-by-step
 				(<HTMLInputElement>document.getElementById("typed")).value=(<HTMLInputElement>document.getElementById("typed")).value.substring(1);
 			}
 			if(shouldBeTyped.length < (<HTMLInputElement>document.getElementById("toType")).value.length || allToType.length > 0) return; // 3gIII. If we're not done with the test yet, return and exit early.
-			document.getElementById("typed").style.backgroundColor="green"; // 3gIV. If we've finished, continue and set the background color to green to indicate the player is done
+			document.getElementById("typed").style.backgroundColor="#4c9638"; // 3gIV. If we've finished, continue and set the background color to green to indicate the player is done
 			lastTime = new Date().getTime(); // 3gV. Get the final time (see firstTime/currTime for what the value means)
 			disabled = true; // 3gVI. Disable more inputting
-			window.setTimeout(() => { // 3gVII. Update the personal best *after the WPM is calculated and 25 ms additional just in case*
+			window.setTimeout(() => { // delay 105ms to make sure we get our last cpm/wpm update
 				personalBest = Math.max(personalBest, currWpm);
-			}, 125);
+				document.getElementById("pbWordsPerMin").innerHTML=isNaN(personalBest) || personalBest === -1 ? "0.000" : personalBest.toFixed(3); 
+			}, 105);
 			return; // 3gVIII. Don't continue to the next part! 
 		}
 		console.log(`wrong @ ${firstBroken} (and maybe onwards)`); // 3h. If the player misinputted, log a little info in the console telling where we're wrong for debugging
@@ -87,7 +88,6 @@ window.onload = function() { // This is where a lot happens, so step-by-step
 function updateDisplays() { // Update the end displays below the input box
 	document.getElementById("charPerSecond").innerHTML=isNaN(currCpm) ? "0.000" : currCpm.toFixed(3); // Characters per minute (cpm), fix to 3 decimal places after the .
 	document.getElementById("wordsPerMin").innerHTML=isNaN(currWpm) ? "0.000" : currWpm.toFixed(3); // Words per minute (wpm), fix to 3 decimal places after the .
-	document.getElementById("pbWordsPerMin").innerHTML=isNaN(personalBest) || personalBest === -1 ? "0.000" : personalBest.toFixed(3); // This doesn't need to be updated every 100ms. TODO: move this, maybe right after the setTimeout in input event?
 }
 function reset() { // RESET EVERYTHING excl. PB
 	currCpm=0; // Reset current CPM counter

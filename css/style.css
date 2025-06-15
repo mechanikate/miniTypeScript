@@ -37,10 +37,13 @@
 	color: #ffffff;
 }
 #preTypescriptText {
-	color: #686868;
+	color: #c8c8c8;
 }
 html, #typed, #toType {
 	color: #ffffff;
 	background-color: #2a2a2a;
 }
-
+#typed, #toType {
+	border: 3px solid #dadada;
+	outline: none;
+}

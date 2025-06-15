@@ -67,8 +67,10 @@ window.onload = function () {
             document.getElementById("typed").style.backgroundColor = "#4c9638"; // 3gIV. If we've finished, continue and set the background color to green to indicate the player is done
             lastTime = new Date().getTime(); // 3gV. Get the final time (see firstTime/currTime for what the value means)
             disabled = true; // 3gVI. Disable more inputting
-            personalBest = Math.max(personalBest, currWpm);
-            document.getElementById("pbWordsPerMin").innerHTML = isNaN(personalBest) || personalBest === -1 ? "0.000" : personalBest.toFixed(3);
+            window.setTimeout(() => {
+                personalBest = Math.max(personalBest, currWpm);
+                document.getElementById("pbWordsPerMin").innerHTML = isNaN(personalBest) || personalBest === -1 ? "0.000" : personalBest.toFixed(3);
+            }, 125);
             return; // 3gVIII. Don't continue to the next part! 
         }
         console.log(`wrong @ ${firstBroken} (and maybe onwards)`); // 3h. If the player misinputted, log a little info in the console telling where we're wrong for debugging

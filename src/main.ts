@@ -66,7 +66,7 @@ window.onload = function() { // This is where a lot happens, so step-by-step
 			window.setTimeout(() => { // delay 105ms to make sure we get our last cpm/wpm update
 				personalBest = Math.max(personalBest, currWpm);
 				document.getElementById("pbWordsPerMin").innerHTML=isNaN(personalBest) || personalBest === -1 ? "0.000" : personalBest.toFixed(3); 
-			}, 105);
+			}, 125);
 			return; // 3gVIII. Don't continue to the next part! 
 		}
 		console.log(`wrong @ ${firstBroken} (and maybe onwards)`); // 3h. If the player misinputted, log a little info in the console telling where we're wrong for debugging

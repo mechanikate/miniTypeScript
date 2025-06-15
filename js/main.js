@@ -15,9 +15,6 @@ let lastTime; // End of test/when test is completed, same format as firstTime/cu
 let disabled = false; // Disable inputting if true (Enter to reset is still allowed)
 let startLength = 0; // Initial length of allToType before we remove any characters
 let personalBest = -1; // PB words per minute
-const randChoice = function (arr) {
-    return arr[Math.floor(Math.random() * arr.length)];
-};
 const firstBreak = function (aStr, bStr) {
     if (bStr.length > aStr.length)
         return aStr.length;
@@ -32,17 +29,27 @@ const firstBreak = function (aStr, bStr) {
     }
     return -1;
 };
-function generatePrompt(len = 10) {
-    const words = [];
-    for (let i = 0; i < len; i++) {
-        words.push(randChoice(dataset));
-    }
-    allToType = words.join(" ");
+function generateDatasetDropdown() {
+    let names = datasetList.map(e => e.name);
+    let ids = datasetList.map(e => e.id);
+    let picker = document.getElementById("datasetPicker");
+    picker.innerHTML = "";
+    names.forEach((e, i) => {
+        let ele = document.createElement("option");
+        ele.setAttribute("value", i.toString());
+        ele.id = ids[i];
+        ele.innerHTML = e;
+        picker.appendChild(ele);
+    });
+}
+function generatePrompt(len = 10, datasetIndex) {
+    allToType = datasetList[datasetIndex].generatorFunction(len);
     startLength = allToType.length;
     document.getElementById("toType").value = allToType;
 }
 window.onload = function () {
-    generatePrompt(); // 1. Generate the first prompt
+    generateDatasetDropdown();
+    generatePrompt(10, 0); // 1. Generate the first prompt
     document.getElementById("typed").addEventListener("paste", e => e.preventDefault()); // 2. Disable cheating via pasting text
     document.getElementById("typed").addEventListener("input", e => {
         if (disabled) { // 3a. If disabled is true, don't allow any typing!
@@ -74,7 +81,7 @@ window.onload = function () {
             return; // 3gVIII. Don't continue to the next part! 
         }
         console.log(`wrong @ ${firstBroken} (and maybe onwards)`); // 3h. If the player misinputted, log a little info in the console telling where we're wrong for debugging
-        document.getElementById("typed").style.color = "red"; // 3i. If the player misinputted, set the color of their inputted text to red to tell them they're wrong somewhere.
+        document.getElementById("typed").style.color = "red"; // 3i. If the player misinputted, set the color of their inputted text to red to tell them they're wrong somewhereDropdown.
     });
     window.setInterval(() => {
         currTime = lastTime === undefined ? new Date().getTime() : lastTime;
@@ -94,6 +101,9 @@ window.onload = function () {
             return;
         } // 5b. Otherwise, make sure we're not typing if disabled is true.
     });
+    document.getElementById("datasetPicker").addEventListener("click", e => {
+        reset();
+    });
 };
 function updateDisplays() {
     document.getElementById("charPerSecond").innerHTML = isNaN(currCpm) ? "0.000" : currCpm.toFixed(3); // Characters per minute (cpm), fix to 3 decimal places after the .
@@ -102,7 +112,7 @@ function updateDisplays() {
 function reset() {
     currCpm = 0; // Reset current CPM counter
     currWpm = 0; // Reset current WPM counter
-    generatePrompt(); // New prompt
+    generatePrompt(10, parseInt(document.getElementById("datasetPicker").value)); // New prompt
     document.getElementById("typed").value = ""; // Clear out what the player has already typed
     document.getElementById("typed").style.backgroundColor = ""; // Clear the background color if they're finished (green bg color)
     firstTime = undefined; // Clear the start time

@@ -6,6 +6,8 @@
 	},
 	"files": [
 		"src/main.ts",
-		"src/dataset.ts"
+		"src/dataset-manager.ts",
+		"src/datasets/english1k.ts",
+		"src/datasets/english100.ts"
 	]
 }

@@ -5,8 +5,7 @@
  * - matthy.dev
  */
 let allToType: string = (<HTMLInputElement>document.getElementById("toType")).value; // The remainder of the text to type
-let lastCorrectIndex: number = 0; // The index where the text is last correct if applicable, examples: 1) typed value = "hello world", to type value = "hallo world", lastCorrectIndex will be 1 ("a" vs "e"). 2) typed value = "abc", to type value = "abc" (these are the same), lastCorrectIndex will be -1
-let nextIndex: number = lastCorrectIndex+1; // The next index the user will type
+let nextIndex: number = 1; // The next index the user will type
 let firstTime: number | undefined; // Start of timer in milliseconds since 1 January 1970
 let currTime: number | undefined; // Current time in milliseconds since 1 January 1970
 let currCpm: number = 0; // Current characters per minute, updated every 100 milliseconds

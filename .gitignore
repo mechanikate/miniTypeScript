@@ -135,4 +135,5 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
- 
+# outputted folder
+js/

@@ -32,7 +32,7 @@ function generateDatasetDropdown() {
 	let ids: string[] = datasetList.map(e => e.id);
 	names.forEach((e: string, i: number) => {
 		let eleDiv: HTMLElement = document.createElement("div");
-		let eleInput: HTMLElement = document.createElement("input");
+		let eleInput: HTMLInputElement = document.createElement("input");
 		let eleLabel: HTMLElement = document.createElement("label");
 		eleInput.setAttribute("value", i.toString());
 		eleInput.setAttribute("type", "radio");
@@ -43,6 +43,7 @@ function generateDatasetDropdown() {
 		eleDiv.classList = "display-text";
 		eleDiv.appendChild(eleInput);
 		eleDiv.appendChild(eleLabel);
+		if(i === 0) eleInput.checked = true;
 		document.getElementById("datasetField").appendChild(eleDiv);	
 	});
 }

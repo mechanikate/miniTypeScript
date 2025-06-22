@@ -44,6 +44,8 @@ function generateDatasetDropdown() {
         eleDiv.classList = "display-text";
         eleDiv.appendChild(eleInput);
         eleDiv.appendChild(eleLabel);
+        if (i === 0)
+            eleInput.checked = true;
         document.getElementById("datasetField").appendChild(eleDiv);
     });
 }

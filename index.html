@@ -6,10 +6,12 @@
 		<script src="js/dataset-manager.js" defer></script>	<!-- see src/dataset.ts for actual comments! TODO: enable changing out the dataset for custom string[]s -->
 		<script src="js/datasets/english100.js" defer></script>
 		<script src="js/datasets/english1k.js" defer></script>
+		<script src="js/datasets/latin1k.js" defer></script>
 		<script src="js/main.js" defer></script> <!-- see src/main.ts for actual comments! -->
 		<link rel="stylesheet" href="css/style.css" />
 	</head>
 	<body>
+		
 		<div class="display-text center-text">
 			<h1><span id="preTypescriptText">mini</span><span id="typescriptText">TypeScript</span></h1>
 		</div>
@@ -27,7 +29,12 @@
 				WPM: <span id="wordsPerMin">0</span> (PB: <span id="pbWordsPerMin">0.000</span>)
 			</span>
 			<br />
-			<select id="datasetPicker"></select>
+			<div class="popup dataset-picker center-vertical center-text">
+				<details>
+					<summary>datasets</summary>
+					<div id="datasetField"></div>
+				</details>
+			</div>
 		</div>
 	</body>
 </html>

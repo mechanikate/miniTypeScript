@@ -47,3 +47,13 @@ html, #typed, #toType {
 	border: 3px solid #dadada;
 	outline: none;
 }
+#datasetField {
+	font-size: 15px;
+}
+input[name="datasetPicker"] {
+	display: none;
+}
+input[name="datasetPicker"]:checked+label {
+	color: #2a2a2a;
+	background-color: #ffffff;
+}

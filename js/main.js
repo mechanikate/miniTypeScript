@@ -5,8 +5,7 @@
  * - matthy.dev
  */
 let allToType = document.getElementById("toType").value; // The remainder of the text to type
-let lastCorrectIndex = 0; // The index where the text is last correct if applicable, examples: 1) typed value = "hello world", to type value = "hallo world", lastCorrectIndex will be 1 ("a" vs "e"). 2) typed value = "abc", to type value = "abc" (these are the same), lastCorrectIndex will be -1
-let nextIndex = lastCorrectIndex + 1; // The next index the user will type
+let nextIndex = 1; // The next index the user will type
 let firstTime; // Start of timer in milliseconds since 1 January 1970
 let currTime; // Current time in milliseconds since 1 January 1970
 let currCpm = 0; // Current characters per minute, updated every 100 milliseconds
@@ -32,14 +31,20 @@ const firstBreak = function (aStr, bStr) {
 function generateDatasetDropdown() {
     let names = datasetList.map(e => e.name);
     let ids = datasetList.map(e => e.id);
-    let picker = document.getElementById("datasetPicker");
-    picker.innerHTML = "";
     names.forEach((e, i) => {
-        let ele = document.createElement("option");
-        ele.setAttribute("value", i.toString());
-        ele.id = ids[i];
-        ele.innerHTML = e;
-        picker.appendChild(ele);
+        let eleDiv = document.createElement("div");
+        let eleInput = document.createElement("input");
+        let eleLabel = document.createElement("label");
+        eleInput.setAttribute("value", i.toString());
+        eleInput.setAttribute("type", "radio");
+        eleInput.setAttribute("name", "datasetPicker");
+        eleInput.id = "option" + ids[i];
+        eleLabel.setAttribute("for", "option" + ids[i]);
+        eleLabel.innerHTML = e;
+        eleDiv.classList = "display-text";
+        eleDiv.appendChild(eleInput);
+        eleDiv.appendChild(eleLabel);
+        document.getElementById("datasetField").appendChild(eleDiv);
     });
 }
 function generatePrompt(len = 10, datasetIndex) {
@@ -101,9 +106,9 @@ window.onload = function () {
             return;
         } // 5b. Otherwise, make sure we're not typing if disabled is true.
     });
-    document.getElementById("datasetPicker").addEventListener("click", e => {
+    Array.from(document.getElementsByName("datasetPicker")).forEach(ele => ele.addEventListener("click", e => {
         reset();
-    });
+    }));
 };
 function updateDisplays() {
     document.getElementById("charPerSecond").innerHTML = isNaN(currCpm) ? "0.000" : currCpm.toFixed(3); // Characters per minute (cpm), fix to 3 decimal places after the .
@@ -112,7 +117,7 @@ function updateDisplays() {
 function reset() {
     currCpm = 0; // Reset current CPM counter
     currWpm = 0; // Reset current WPM counter
-    generatePrompt(10, parseInt(document.getElementById("datasetPicker").value)); // New prompt
+    generatePrompt(10, parseInt(document.querySelector(`input[name="datasetPicker"]:checked`).value)); // New prompt
     document.getElementById("typed").value = ""; // Clear out what the player has already typed
     document.getElementById("typed").style.backgroundColor = ""; // Clear the background color if they're finished (green bg color)
     firstTime = undefined; // Clear the start time

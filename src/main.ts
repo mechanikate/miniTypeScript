@@ -30,14 +30,20 @@ const firstBreak = function (aStr: string, bStr: string): number { // Calculates
 function generateDatasetDropdown() {
 	let names: string[] = datasetList.map(e => e.name);
 	let ids: string[] = datasetList.map(e => e.id);
-	let picker = document.getElementById("datasetPicker");
-	picker.innerHTML = "";
 	names.forEach((e: string, i: number) => {
-		let ele: HTMLElement = document.createElement("option");
-		ele.setAttribute("value", i.toString());
-		ele.id = ids[i];
-		ele.innerHTML = e;
-		picker.appendChild(ele);
+		let eleDiv: HTMLElement = document.createElement("div");
+		let eleInput: HTMLElement = document.createElement("input");
+		let eleLabel: HTMLElement = document.createElement("label");
+		eleInput.setAttribute("value", i.toString());
+		eleInput.setAttribute("type", "radio");
+		eleInput.setAttribute("name", "datasetPicker");
+		eleInput.id = "option"+ids[i];
+		eleLabel.setAttribute("for", "option"+ids[i]);
+		eleLabel.innerHTML = e;
+		eleDiv.classList = "display-text";
+		eleDiv.appendChild(eleInput);
+		eleDiv.appendChild(eleLabel);
+		document.getElementById("datasetField").appendChild(eleDiv);	
 	});
 }
 function generatePrompt(len: number = 10, datasetIndex: number) { // Generate the 10 random words separated by spaces
@@ -91,9 +97,9 @@ window.onload = function() { // This is where a lot happens, so step-by-step
 		if(e.key == "Enter") { disabled = false; reset(); } // 5a. If Enter has been pressed, reset to the start
 		if(disabled) { e.preventDefault(); return; } // 5b. Otherwise, make sure we're not typing if disabled is true.
 	});
-	document.getElementById("datasetPicker").addEventListener("click", e => { // 6. Add another listener to reset the prompt if the player chooses another dataset
+	Array.from(document.getElementsByName("datasetPicker")).forEach(ele => ele.addEventListener("click", e => { // 6. Add another listener to reset the prompt if the player chooses another dataset
 		reset();
-	});
+	}));
 };
 function updateDisplays() { // Update the end displays below the input box
 	document.getElementById("charPerSecond").innerHTML=isNaN(currCpm) ? "0.000" : currCpm.toFixed(3); // Characters per minute (cpm), fix to 3 decimal places after the .
@@ -102,7 +108,7 @@ function updateDisplays() { // Update the end displays below the input box
 function reset() { // RESET EVERYTHING excl. PB
 	currCpm=0; // Reset current CPM counter
 	currWpm=0; // Reset current WPM counter
-	generatePrompt(10, parseInt((<HTMLInputElement>document.getElementById("datasetPicker")).value)); // New prompt
+	generatePrompt(10, parseInt((<HTMLInputElement>document.querySelector(`input[name="datasetPicker"]:checked`)).value)); // New prompt
 	(<HTMLInputElement>document.getElementById("typed")).value = ""; // Clear out what the player has already typed
 	document.getElementById("typed").style.backgroundColor=""; // Clear the background color if they're finished (green bg color)
 	firstTime = undefined; // Clear the start time

@@ -28,12 +28,48 @@
 			</span> |
 			<span class="wpm-wrapper">
 				WPM: <span id="wordsPerMin">0</span> (PB: <span id="pbWordsPerMin">0.000</span>)
+			</span> | 
+			<span class="time-wrapper">
+				TIME: <span id="timeLeft">0</span>
 			</span>
 			<br />
-			<div class="popup dataset-picker center-vertical center-text">
+			<div class="popup picker dataset-picker center-vertical center-text">
 				<details>
 					<summary>datasets</summary>
 					<div id="datasetField"></div>
+				</details>
+			</div>
+			<div class="popup picker type-picker center-text">
+				<details>
+					<summary>length</summary>
+					<div id="lengthField">
+						<details class="picker small-picker">
+							<summary>words</summary>
+							<div class="type-picker-field display-text">
+								<input class="radio-picker type-picker-radio" type="radio" id="length10Words" name="typePicker" value="words-10-0" />
+								<label class="small-label" for="length10Words">words 10</label>
+							</div>
+							<div class="type-picker-field display-text">
+								<input class="radio-picker type-picker-radio" type="radio" id="length25Words" name="typePicker" value="words-25-0" />
+								<label class="small-label" for="length25Words">words 25</label>
+							</div>
+						</details>
+						<details class="picker small-picker">
+							<summary>time</summary>
+							<div class="type-picker-field display-text">
+								<input class="radio-picker type-picker-radio" type="radio" id="length15Time" name="typePicker" value="time-150-15" />
+								<label class="small-label" for="length15Time">time 15</label>
+							</div>
+							<div class="type-picker-field display-text">
+								<input class="radio-picker type-picker-radio" type="radio" id="length30Time" name="typePicker" value="time-300-30" />
+								<label class="small-label" for="length30Time">time 30</label>
+							</div>
+							<div class="type-picker-field display-text">
+								<input class="radio-picker type-picker-radio" type="radio" id="length60Time" name="typePicker" value="time-600-60" />
+								<label class="small-label" for="length60Time">time 60</label>
+							</div>
+						</details>
+					</div>
 				</details>
 			</div>
 		</div>

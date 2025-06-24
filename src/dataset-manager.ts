@@ -9,6 +9,7 @@ const repeatGenerator = function(count: number, generator: (count: number) => st
 interface Dataset {
 	readonly name: string;
 	readonly id: string;
+	readonly language: string;
 	readonly values: string[];
 	readonly generatorFunction: (count: number) => string;
 }

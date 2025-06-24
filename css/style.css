@@ -32,6 +32,9 @@
 	top: 25%;
 	opacity: 0.75;
 }
+.smaller-text {
+	font-size: 15px;
+}
 #typescriptText {
 	background-color: #007acc;
 	color: #ffffff;
@@ -47,13 +50,20 @@ html, #typed, #toType {
 	border: 3px solid #dadada;
 	outline: none;
 }
-#datasetField {
-	font-size: 15px;
-}
-input[name="datasetPicker"] {
+.radio-picker {
 	display: none;
 }
-input[name="datasetPicker"]:checked+label {
+.big-label {
+	font-size: 15px;
+}
+.radio-picker:checked+label {
+	font-size: 15px;
 	color: #2a2a2a;
 	background-color: #ffffff;
+}
+.small-picker {
+	font-size: 18px;
+}
+.small-picker > .type-picker-field {
+	font-size: 15px;
 }

@@ -12,6 +12,7 @@
   "devDependencies": {
     "@eslint/js": "^9.29.0",
     "eslint": "^9.29.0",
+    "tsconfig-glob": "^0.4.3",
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.34.0"
   }

@@ -4,11 +4,8 @@
 		"lib": ["es2016", "dom"],
 		"outDir": "js"
 	},
-	"files": [
-		"src/main.ts",
-		"src/dataset-manager.ts",
-		"src/datasets/english1k.ts",
-		"src/datasets/english100.ts",
-		"src/datasets/latin1k.ts"
+	"include": [
+		"src/*.ts",
+		"src/datasets/*.ts"
 	]
 }

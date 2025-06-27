@@ -13,4 +13,12 @@
 		}
 	});
 })();
-// once you're done writing all of this, you can go to index.html and add a script tag to the corresponding js dataset file, for this it would be `<script src="js/datasets/example.js"></script>`
+// once you're done writing (or making tweaks to) all of this, you can test it in inspect element, via:
+// importDataset({path:"js/datasets/example.js", local:true});
+// this imports the dataset from the local path corresponding to the compiled js file from `npx tsc`, and marks it as a local file (so that we don't have to use fetch api to fetch a remote url)
+// to actually keep it in miniTS, you can either:
+// 	a) submit a pull request the miniTypeScript to add it for everyone
+// 	b) add your DatasetPath object (the argument for importDataset) into src/main.ts's datasetsToLoad constant
+// note you can also use external URLS, like:
+// importDataset({path:"https://raw.githubusercontent.com/mechanikate/miniTypeScript/refs/heads/master/js/datasets/example.js", local:false})
+// however this won't work locally due to CORS, and so it's better to do this only on the real website

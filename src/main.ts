@@ -37,6 +37,20 @@ let currentTestType: TestType = { // default to words 10 (english100)
 	words: 10,
 	timer: 0
 };
+const datasetsToLoad: DatasetPath[] = [
+	{
+		path: "js/datasets/english100.js",
+		local: true
+	},
+	{
+		path: "js/datasets/english1k.js",
+		local: true
+	},
+	{
+		path: "js/datasets/latin1k.js",
+		local: true
+	}
+];
 const firstBreak = function (aStr: string, bStr: string): number { // Calculates the first time 2 strings differ, see lastCorrectIndex declaration for examples
 	if(bStr.length > aStr.length) return aStr.length;
 	let a: string[] = Array.from(aStr);
@@ -86,11 +100,15 @@ const addPB = (cpm: number, wpm: number, tt: TestType) => {
 };
 const clampIfUndefined = (v,clampTo) => (v == undefined || v == null || v == -1) ? clampTo : v; // clamp to clampTo if the value is unusable/invalid
 const findPB = (tt: TestType): PersonalBest => clampIfUndefined(pbs[pbs.map(pbV => pbV.testType).map(ttV => `${ttV.type}-${ttV.words}-${ttV.timer}`).indexOf(`${tt.type}-${tt.words}-${tt.timer}`)], {testType: currentTestType, cpm: -1, wpm: -1}); // find a pb of TestType tt and get it as PersonalBest
- 
+function reloadDatasets() {
+	datasetsToLoad.forEach(importDataset);
+	disabled = true;
+}
 
 function generateDatasetDropdown() { // make the dropdowns for languages/datasets (english1k, english100, etc.)
 	let names: string[] = datasetList.map(e => e.name);
 	let ids: string[] = datasetList.map(e => e.id);
+	document.getElementById("datasetField").innerHTML = ""; // clear old datasets
 	names.forEach((e: string, i: number) => {
 		/** Should end up looking like this (in datasetField div):
 		 * <div class="display-text smaller-text">
@@ -146,8 +164,7 @@ function finishTest() { // Ends the test
 window.onload = function() { // This is where a lot happens, so step-by-step
 	personalBest = -1;
 	updatePB();
-	generateDatasetDropdown();
-	generatePrompt(10,0); // 1. Generate the first prompt
+	reloadDatasets();
 	document.getElementById("typed").addEventListener("paste", e => e.preventDefault()); // 2. Disable cheating via pasting text
 	Array.from(document.querySelectorAll(".type-picker-radio")).forEach((e: HTMLElement) => e.addEventListener("click", e => {
 		currentTestType = getTestType();
@@ -194,11 +211,6 @@ window.onload = function() { // This is where a lot happens, so step-by-step
 		if(e.key == "Enter") {reset(); updateDisplays(); } // 5a. If Enter has been pressed, reset to the start
 		if(disabled) { e.preventDefault(); return; } // 5b. Otherwise, make sure we're not typing if disabled is true.
 	});
-	[...Array.from(document.getElementsByName("datasetPicker")), ...Array.from(document.getElementsByName("typePicker"))].forEach(ele => ele.addEventListener("click", e => { // 6. Add another listener to reset the prompt if the player chooses another dataset
-		reset();
-		updatePB();
-		window.setTimeout(() => document.getElementById("timeLeft").innerHTML=currentTestType.timer.toFixed(1), 20); // make the time display the amount of time granted, delay 20ms to allow time for previous display updates to stop
-	}));
 };
 function updateDisplays() { // Update the end displays below the input box
 	document.getElementById("charPerSecond").innerHTML=isNaN(currCpm) ? "0.000" : currCpm.toFixed(3); // Characters per minute (cpm), fix to 3 decimal places after the .

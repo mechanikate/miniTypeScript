@@ -37,6 +37,6 @@ Then, you can open <code>index.html</code> with any browser to view it locally!
 <h2>Adding stuff</h2>
 Adding stuff has been made as simple as possible for us.
 <h3>Datasets/languages</h3>
-You can add datasets in <code>src/datasets</code>. To see the format, look at <a href="https://github.com/mechanikate/miniTypeScript/blob/master/src/datasets/example.ts">src/datasets/example.ts</a>.
+You can add datasets in <code>src/datasets</code>, and import them with <code>importDataset(datasetPath: DatasetPath)</code>. To see the format, look at <a href="https://github.com/mechanikate/miniTypeScript/blob/master/src/datasets/example.ts">src/datasets/example.ts</a>.
 <h3>Time/word formats</h3>
 You can add formats in <code>index.html</code> in an appropriate category (the one with the summary containing words or the summary containing time). The label is self-explanatory, but actually getting the timer/word count to be correct must be changed in the value of the <code>input</code> element. The format is <code>[TYPE]-[WORDCOUNT]-[TIMERAMOUNT]</code>, where you replace <code>[TYPE]</code> with either <code>words</code> or <code>time</code> (whateber fits best), <code>[WORDCOUNT]</code> with the number of words (if <code>[TYPE]</code> is <code>time</code>, set this to 10 times the timer in seconds), and <code>[TIMERAMOUNT]</code> with the amount of time in seconds the user has.

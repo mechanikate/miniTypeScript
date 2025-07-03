@@ -14,7 +14,12 @@
   opacity: 0.5;
   z-index: 999;
 }
-
+.outline-block {
+	border: 1px solid #dadada;
+	width: 75ch;
+	text-align: center;
+	margin: auto;
+}
 .typing-placeholder {
   position: absolute;
   font-size: 25px;
@@ -66,4 +71,9 @@ html, #typed, #toType {
 }
 .small-picker > .type-picker-field {
 	font-size: 15px;
+}
+.code-block {
+	white-space: pre-wrap;
+	font-family: "Courier New";
+	font-size: 10pt;
 }

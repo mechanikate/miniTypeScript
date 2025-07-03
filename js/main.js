@@ -10,6 +10,7 @@ let startLength = 0; // Initial length of allToType before we remove any charact
 let personalBest = -1; // PB words per minute
 let pbv = localStorage.getItem("pbs");
 let pbs;
+let prevWpms = [];
 let testInProgress = false; // Is a test running?
 pbs = pbv ? JSON.parse(pbv) : [];
 let currentTestType = {
@@ -86,6 +87,9 @@ function reloadDatasets() {
     datasetsToLoad.forEach(importDataset);
     disabled = true;
 }
+function updateStats() {
+    document.getElementById("graphBox").innerHTML = generateGraph(75, 25, prevWpms);
+}
 function generateDatasetDropdown() {
     let names = datasetList.map(e => e.name);
     let ids = datasetList.map(e => e.id);
@@ -140,12 +144,15 @@ function finishTest() {
     disabled = true; // 3gVI. Disable more inputting
     window.setTimeout(() => {
         addPB(currCpm, currWpm, currentTestType);
+        prevWpms.push(currWpm);
+        updateStats();
         updatePB();
     }, 125);
 }
 window.onload = function () {
     personalBest = -1;
     updatePB();
+    updateStats();
     reloadDatasets();
     document.getElementById("typed").addEventListener("paste", e => e.preventDefault()); // 2. Disable cheating via pasting text
     Array.from(document.querySelectorAll(".type-picker-radio")).forEach((e) => e.addEventListener("click", e => {

@@ -20,7 +20,7 @@ let datasetList = [];
 function importDataset(datasetPath) {
     return __awaiter(this, void 0, void 0, function* () {
         const script = document.createElement("script");
-        console.log(`Loading ${datasetPath.local ? "local" : ""} dataset @ ${datasetPath.path}`);
+        console.log(`Loading ${datasetPath.local ? "local " : ""}dataset @ ${datasetPath.path}`);
         script.src = datasetPath.path;
         script.onload = () => {
             disabled = false;

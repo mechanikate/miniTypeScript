@@ -16,7 +16,6 @@
 }
 .outline-block {
 	border: 1px solid #dadada;
-	width: 75ch;
 	text-align: center;
 	margin: auto;
 }
@@ -76,4 +75,12 @@ html, #typed, #toType {
 	white-space: pre-wrap;
 	font-family: "Courier New";
 	font-size: 10pt;
+}
+#statsGraph {
+	width: 75%;
+	height: 5%;
+}
+.axis-marker {
+	float: right;
+	z-index: 999;
 }

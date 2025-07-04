@@ -88,7 +88,7 @@ function reloadDatasets() {
     disabled = true;
 }
 function updateStats() {
-    document.getElementById("graphBox").innerHTML = generateGraph(75, 25, prevWpms);
+    generateGraph(document.getElementById("statsGraph"), prevWpms);
 }
 function generateDatasetDropdown() {
     let names = datasetList.map(e => e.name);
@@ -154,6 +154,11 @@ window.onload = function () {
     updatePB();
     updateStats();
     reloadDatasets();
+    let canvas = document.getElementById("statsGraph");
+    canvas.width = 1000;
+    canvas.height = 200;
+    canvas.style.width = "100%";
+    canvas.style.height = "100%";
     document.getElementById("typed").addEventListener("paste", e => e.preventDefault()); // 2. Disable cheating via pasting text
     Array.from(document.querySelectorAll(".type-picker-radio")).forEach((e) => e.addEventListener("click", e => {
         currentTestType = getTestType();

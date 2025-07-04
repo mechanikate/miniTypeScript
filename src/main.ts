@@ -106,7 +106,7 @@ function reloadDatasets() {
 	disabled = true;
 }
 function updateStats() {
-	document.getElementById("graphBox").innerHTML = generateGraph(75, 25, prevWpms);
+	generateGraph(<HTMLCanvasElement> document.getElementById("statsGraph"), prevWpms);
 }
 function generateDatasetDropdown() { // make the dropdowns for languages/datasets (english1k, english100, etc.)
 	let names: string[] = datasetList.map(e => e.name);
@@ -171,6 +171,11 @@ window.onload = function() { // This is where a lot happens, so step-by-step
 	updatePB();
 	updateStats();
 	reloadDatasets();
+	let canvas: HTMLCanvasElement = <HTMLCanvasElement> document.getElementById("statsGraph");
+	canvas.width = 1000;
+	canvas.height = 200;
+	canvas.style.width = "100%";
+	canvas.style.height = "100%";
 	document.getElementById("typed").addEventListener("paste", e => e.preventDefault()); // 2. Disable cheating via pasting text
 	Array.from(document.querySelectorAll(".type-picker-radio")).forEach((e: HTMLElement) => e.addEventListener("click", e => {
 		currentTestType = getTestType();

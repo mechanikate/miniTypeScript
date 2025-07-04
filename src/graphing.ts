@@ -1,4 +1,4 @@
-function generateGraph(maxWidth: number, maxHeight: number, yValues: number[]): string { // vpd = values/units per dot
+/*function generateGraph(maxWidth: number, maxHeight: number, yValues: number[]): string { // vpd = values/units per dot
 		let vpd: number = Math.max(15, Math.max(...yValues)/maxHeight+1); 
         let gridVals = new Array(maxHeight); // value grid, not as chars yet
         let maxY = Math.floor(Math.max(...yValues.map(e => e/vpd)));
@@ -12,4 +12,38 @@ function generateGraph(maxWidth: number, maxHeight: number, yValues: number[]): 
         });
 
         return gridVals.map((e: boolean[]): string => e.map((f: boolean): string => f ? "@" : " ").join("")).join("\n");
+}
+function circle(ctx: CanvasRenderingContext2D, x:number, y:number, r:number, fillColor: string = "#bababa") {
+	ctx.beginPath();
+	ctx.arc(x,y, r, 0, 2*Math.PI);
+	ctx.fillStyle = fillColor;
+	ctx.fill();
+}*/
+function generateGraph(canvasEle: HTMLCanvasElement, yValues: number[]) {
+	let ctx: CanvasRenderingContext2D = canvasEle.getContext("2d");
+	let width: number = canvasEle.width;
+	let height: number = canvasEle.height;
+	let hpd: number = width/yValues.length;
+	let minV: number = Math.min(...yValues);
+	let maxV: number = Math.max(...yValues);
+	let range: number = maxV - minV;
+	let vpd: number = range/height+1;
+	let maxYVal: number = Math.floor(Math.max(...yValues.map(e => e/vpd)));
+	ctx.clearRect(0,0, width,height);
+	let oneDone: boolean = false;
+	ctx.beginPath();
+	document.getElementById("minWpm").innerHTML = Math.floor(minV).toString();
+	document.getElementById("maxWpm").innerHTML = Math.ceil(maxV).toString();
+	yValues.forEach((y: number, x: number) => {
+		let params: [number, number] = [x*hpd, height-y/vpd];
+		if(!oneDone) { 
+			ctx.moveTo(...params);
+			oneDone = true;
+		} else {
+			ctx.lineTo(...params);
+		}
+	});
+	ctx.strokeStyle = "#bababa";
+	ctx.lineWidth = 2;
+	ctx.stroke();
 }

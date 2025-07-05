@@ -19,7 +19,16 @@ function circle(ctx: CanvasRenderingContext2D, x:number, y:number, r:number, fil
 	ctx.fillStyle = fillColor;
 	ctx.fill();
 }*/
+interface Vec2d {
+	x: number;
+	y: number;
+}
 function generateGraph(canvasEle: HTMLCanvasElement, yValues: number[]) {
+	let asVecs: Vec2d[] = yValues.map((e: number, i: number): Vec2d => ({x: i, y: e}));
+	let currentMax = -1;
+	let pbVecs: Vec2d[] = asVecs.filter((e: Vec2d, i: number, arr: Vec2d[]) => {
+		return i === 0 || Math.max(...(arr.map((n: Vec2d): number => n.y).slice(0, i))) < e.y;
+	});
 	let ctx: CanvasRenderingContext2D = canvasEle.getContext("2d");
 	let width: number = canvasEle.width;
 	let height: number = canvasEle.height;
@@ -27,10 +36,11 @@ function generateGraph(canvasEle: HTMLCanvasElement, yValues: number[]) {
 	let minV: number = Math.min(...yValues);
 	let maxV: number = Math.max(...yValues);
 	let range: number = maxV - minV;
-	let vpd: number = range/height;
+	let vpd: number = range/(height-10);
 	let maxYVal: number = Math.floor(Math.max(...yValues.map(e => e/vpd)));
-	ctx.clearRect(0,0, width, height);
 	let oneDone: boolean = false;
+	ctx.clearRect(0,0, width, height);
+	ctx.setLineDash([]);
 	ctx.font = "28px monospace";
 	ctx.strokeStyle = "#494949";
 	ctx.strokeText(isFinite(maxV) ? Math.ceil(maxV).toString() : "0", 0,28);
@@ -55,5 +65,22 @@ function generateGraph(canvasEle: HTMLCanvasElement, yValues: number[]) {
 	});
 	ctx.strokeStyle = "#bababa";
 	ctx.lineWidth = 2;
+	ctx.stroke();
+	oneDone = false;
+	ctx.beginPath();
+	ctx.setLineDash([10, 15]);
+	let prev = 0;
+	pbVecs.forEach((vec: Vec2d) => {
+		let params: [number, number] = [vec.x*hpd, height-(vec.y-minV)/vpd];
+		if(!oneDone) {
+			ctx.moveTo(...params);
+			oneDone = true;
+		} else {
+			ctx.lineTo(vec.x*hpd, height-(prev-minV)/vpd);
+			ctx.lineTo(...params);
+		}
+		prev = Math.max(prev, vec.y);
+	});
+	ctx.lineTo(width, height-(prev-minV)/vpd);
 	ctx.stroke();
 }

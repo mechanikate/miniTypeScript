@@ -1,25 +1,9 @@
-/*function generateGraph(maxWidth: number, maxHeight: number, yValues: number[]): string { // vpd = values/units per dot
-        let vpd: number = Math.max(15, Math.max(...yValues)/maxHeight+1);
-        let gridVals = new Array(maxHeight); // value grid, not as chars yet
-        let maxY = Math.floor(Math.max(...yValues.map(e => e/vpd)));
-        yValues = yValues.slice(Math.max(yValues.length - maxWidth, 0));
-        for(let r=0; r<maxHeight; r++) {
-            gridVals[r] = new Array(maxWidth).fill(false);
-        }
-
-        yValues.forEach((e: number, i: number) => {
-                gridVals[maxY-Math.floor(e/vpd)][i] = true;
-        });
-
-        return gridVals.map((e: boolean[]): string => e.map((f: boolean): string => f ? "@" : " ").join("")).join("\n");
-}
-function circle(ctx: CanvasRenderingContext2D, x:number, y:number, r:number, fillColor: string = "#bababa") {
-    ctx.beginPath();
-    ctx.arc(x,y, r, 0, 2*Math.PI);
-    ctx.fillStyle = fillColor;
-    ctx.fill();
-}*/
 function generateGraph(canvasEle, yValues) {
+    let asVecs = yValues.map((e, i) => ({ x: i, y: e }));
+    let currentMax = -1;
+    let pbVecs = asVecs.filter((e, i, arr) => {
+        return i === 0 || Math.max(...(arr.map((n) => n.y).slice(0, i))) < e.y;
+    });
     let ctx = canvasEle.getContext("2d");
     let width = canvasEle.width;
     let height = canvasEle.height;
@@ -27,10 +11,11 @@ function generateGraph(canvasEle, yValues) {
     let minV = Math.min(...yValues);
     let maxV = Math.max(...yValues);
     let range = maxV - minV;
-    let vpd = range / height;
+    let vpd = range / (height - 10);
     let maxYVal = Math.floor(Math.max(...yValues.map(e => e / vpd)));
-    ctx.clearRect(0, 0, width, height);
     let oneDone = false;
+    ctx.clearRect(0, 0, width, height);
+    ctx.setLineDash([]);
     ctx.font = "28px monospace";
     ctx.strokeStyle = "#494949";
     ctx.strokeText(isFinite(maxV) ? Math.ceil(maxV).toString() : "0", 0, 28);
@@ -56,5 +41,23 @@ function generateGraph(canvasEle, yValues) {
     });
     ctx.strokeStyle = "#bababa";
     ctx.lineWidth = 2;
+    ctx.stroke();
+    oneDone = false;
+    ctx.beginPath();
+    ctx.setLineDash([10, 15]);
+    let prev = 0;
+    pbVecs.forEach((vec) => {
+        let params = [vec.x * hpd, height - (vec.y - minV) / vpd];
+        if (!oneDone) {
+            ctx.moveTo(...params);
+            oneDone = true;
+        }
+        else {
+            ctx.lineTo(vec.x * hpd, height - (prev - minV) / vpd);
+            ctx.lineTo(...params);
+        }
+        prev = Math.max(prev, vec.y);
+    });
+    ctx.lineTo(width, height - (prev - minV) / vpd);
     ctx.stroke();
 }

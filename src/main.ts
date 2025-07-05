@@ -30,9 +30,11 @@ let startLength: number = 0; // Initial length of allToType before we remove any
 let personalBest: number = -1; // PB words per minute
 let pbv: string = localStorage.getItem("pbs");
 let pbs: PersonalBest[]; 
-let prevWpms = [];
-let testInProgress: boolean = false; // Is a test running?
 pbs = pbv ? JSON.parse(pbv) : [];
+let prevWpmsVal: string = localStorage.getItem("prevWpms");
+let prevWpms: number[] = [];
+prevWpms = prevWpmsVal ? (<number[]> JSON.parse(prevWpmsVal)) : [];
+let testInProgress: boolean = false; // Is a test running?
 let currentTestType: TestType = { // default to words 10 (english100)
 	type: "words",
 	words: 10,
@@ -162,6 +164,7 @@ function finishTest() { // Ends the test
 	window.setTimeout(() => {
 		addPB(currCpm, currWpm, currentTestType);
 		prevWpms.push(currWpm);
+		localStorage.setItem("prevWpms", JSON.stringify(prevWpms));
 		updateStats();
 		updatePB();
 	}, 125);
@@ -169,13 +172,13 @@ function finishTest() { // Ends the test
 window.onload = function() { // This is where a lot happens, so step-by-step
 	personalBest = -1;
 	updatePB();
-	updateStats();
 	reloadDatasets();
 	let canvas: HTMLCanvasElement = <HTMLCanvasElement> document.getElementById("statsGraph");
 	canvas.width = 1000;
 	canvas.height = 200;
 	canvas.style.width = "100%";
 	canvas.style.height = "100%";
+	updateStats();
 	document.getElementById("typed").addEventListener("paste", e => e.preventDefault()); // 2. Disable cheating via pasting text
 	Array.from(document.querySelectorAll(".type-picker-radio")).forEach((e: HTMLElement) => e.addEventListener("click", e => {
 		currentTestType = getTestType();

@@ -10,9 +10,11 @@ let startLength = 0; // Initial length of allToType before we remove any charact
 let personalBest = -1; // PB words per minute
 let pbv = localStorage.getItem("pbs");
 let pbs;
-let prevWpms = [];
-let testInProgress = false; // Is a test running?
 pbs = pbv ? JSON.parse(pbv) : [];
+let prevWpmsVal = localStorage.getItem("prevWpms");
+let prevWpms = [];
+prevWpms = prevWpmsVal ? JSON.parse(prevWpmsVal) : [];
+let testInProgress = false; // Is a test running?
 let currentTestType = {
     type: "words",
     words: 10,
@@ -145,6 +147,7 @@ function finishTest() {
     window.setTimeout(() => {
         addPB(currCpm, currWpm, currentTestType);
         prevWpms.push(currWpm);
+        localStorage.setItem("prevWpms", JSON.stringify(prevWpms));
         updateStats();
         updatePB();
     }, 125);
@@ -152,13 +155,13 @@ function finishTest() {
 window.onload = function () {
     personalBest = -1;
     updatePB();
-    updateStats();
     reloadDatasets();
     let canvas = document.getElementById("statsGraph");
     canvas.width = 1000;
     canvas.height = 200;
     canvas.style.width = "100%";
     canvas.style.height = "100%";
+    updateStats();
     document.getElementById("typed").addEventListener("paste", e => e.preventDefault()); // 2. Disable cheating via pasting text
     Array.from(document.querySelectorAll(".type-picker-radio")).forEach((e) => e.addEventListener("click", e => {
         currentTestType = getTestType();

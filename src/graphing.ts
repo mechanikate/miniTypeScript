@@ -27,15 +27,25 @@ function generateGraph(canvasEle: HTMLCanvasElement, yValues: number[]) {
 	let minV: number = Math.min(...yValues);
 	let maxV: number = Math.max(...yValues);
 	let range: number = maxV - minV;
-	let vpd: number = range/height+1;
+	let vpd: number = range/height;
 	let maxYVal: number = Math.floor(Math.max(...yValues.map(e => e/vpd)));
-	ctx.clearRect(0,0, width,height);
+	ctx.clearRect(0,0, width, height);
 	let oneDone: boolean = false;
+	ctx.font = "28px monospace";
+	ctx.strokeStyle = "#494949";
+	ctx.strokeText(isFinite(maxV) ? Math.ceil(maxV).toString() : "0", 0,28);
+	ctx.strokeText(isFinite(minV) ? Math.floor(minV).toString() : "0", 0,height-14);
+	for(let h=0; h<=height; h+=height/5) {
+		ctx.beginPath();
+		ctx.moveTo(0,h);
+		ctx.lineTo(width,h);
+		ctx.strokeStyle = "#5a5a5a";
+		ctx.lineWidth=3;
+		ctx.stroke();
+	}
 	ctx.beginPath();
-	document.getElementById("minWpm").innerHTML = Math.floor(minV).toString();
-	document.getElementById("maxWpm").innerHTML = Math.ceil(maxV).toString();
 	yValues.forEach((y: number, x: number) => {
-		let params: [number, number] = [x*hpd, height-y/vpd];
+		let params: [number, number] = [x*hpd, height-(y-minV)/vpd];
 		if(!oneDone) { 
 			ctx.moveTo(...params);
 			oneDone = true;

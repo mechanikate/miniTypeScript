@@ -5,7 +5,7 @@
  * TODO:
  * * more datasets
  * * more lengths
- * * custom bps for each dataset AND length, not just length
+ * * custom pbs for each dataset AND length, not just length
  * - matthy.dev
  */
 interface TestType {
@@ -35,6 +35,9 @@ let prevWpmsVal: string = localStorage.getItem("prevWpms");
 let prevWpms: number[] = [];
 prevWpms = prevWpmsVal ? (<number[]> JSON.parse(prevWpmsVal)) : [];
 let testInProgress: boolean = false; // Is a test running?
+let focusToggleInterval;
+let focusToggleFrac: number = 1;
+let focusing: boolean = false;
 let currentTestType: TestType = { // default to words 10 (english100)
 	type: "words",
 	words: 10,
@@ -157,7 +160,9 @@ const updatePB = () => { // Update personal best value and display
 	personalBest = findPB(currentTestType).wpm;
 	document.getElementById("pbWordsPerMin").innerHTML=isNaN(personalBest) || personalBest === -1 ? "0.000" : personalBest.toFixed(3); // display 
 }
+const easeInOut = (x: number): number => x**2*(3-2*x);
 function finishTest() { // Ends the test
+	if(focusOnType) toggleFocusMode(true);
 	document.getElementById("typed").style.backgroundColor="#4c9638"; // 3gIV. If we've finished, continue and set the background color to green to indicate the player is done
 	lastTime = new Date().getTime(); // 3gV. Get the final time (see firstTime/currTime for what the value means)
 	disabled = true; // 3gVI. Disable more inputting
@@ -168,6 +173,23 @@ function finishTest() { // Ends the test
 		updateStats();
 		updatePB();
 	}, 125);
+}
+function toggleFocusMode(enable: boolean = false, delay: number = 5) {
+	let toExec = (conditionFunction, step: number) => {
+		if(conditionFunction(focusToggleFrac)) return window.clearInterval(focusToggleInterval);
+		focusToggleFrac += step;
+	};
+	focusToggleInterval = window.setInterval(() => {
+		Array.from(document.querySelectorAll(".focus-hide")).forEach((e: HTMLElement) => {
+			e.style.opacity = `${100*easeInOut(focusToggleFrac)}%`;
+			toExec(enable ? 
+						(pc: number): boolean => pc >= 1 : 
+						(pc: number): boolean => pc <= 0,
+					enable ? 
+						0.01 : 
+						-0.01);
+		});
+	}, delay);
 }
 window.onload = function() { // This is where a lot happens, so step-by-step
 	personalBest = -1;
@@ -192,6 +214,7 @@ window.onload = function() { // This is where a lot happens, so step-by-step
 		}
 		if(firstTime == undefined) {
 			testInProgress = true;
+			if(focusOnType) toggleFocusMode(false);
 			firstTime = new Date().getTime(); // 3b. If we haven't started the stopwatch, start it
 		}
 		let currentlyTyped: string = (<HTMLInputElement>document.getElementById("typed")).value; // 3c. Set what we've currently typed thus far (will be cleared later)
@@ -225,6 +248,7 @@ window.onload = function() { // This is where a lot happens, so step-by-step
 		if(e.key == "Enter") {reset(); updateDisplays(); } // 5a. If Enter has been pressed, reset to the start
 		if(disabled) { e.preventDefault(); return; } // 5b. Otherwise, make sure we're not typing if disabled is true.
 	});
+	loadListeners();
 };
 function updateDisplays() { // Update the end displays below the input box
 	document.getElementById("charPerSecond").innerHTML=isNaN(currCpm) ? "0.000" : currCpm.toFixed(3); // Characters per minute (cpm), fix to 3 decimal places after the .
@@ -232,6 +256,7 @@ function updateDisplays() { // Update the end displays below the input box
 	document.getElementById("timeLeft").innerHTML=isNaN(currTime-firstTime) || currentTestType.timer <= 0 ? "0.0" : Math.abs((currentTestType.timer-(currTime-firstTime)/1000)).toFixed(1); // Time left (s), fix to 1 decimal place after the .
 }
 function reset() { // reset test, e.g. excl. PB
+	if(focusOnType) toggleFocusMode(true, 3);
 	disabled = false; // Enable typing again
 	testInProgress=false; // Mark that we're done with this test
 	currCpm=0; // Reset current CPM counter

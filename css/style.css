@@ -54,16 +54,20 @@ html, #typed, #toType {
 	border: 3px solid #dadada;
 	outline: none;
 }
-.radio-picker {
+.radio-picker, .check-picker {
 	display: none;
 }
 .big-label {
 	font-size: 15px;
 }
-.radio-picker:checked+label {
+.radio-picker:checked+label, .check-picker:checked+label {
 	font-size: 15px;
 	color: #2a2a2a;
 	background-color: #ffffff;
+}
+.check-picker+label {
+	font-size: 15px;
+	color: #ffffff;
 }
 .small-picker {
 	font-size: 18px;

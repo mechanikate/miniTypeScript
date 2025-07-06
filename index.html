@@ -5,18 +5,14 @@
 		<title>miniTypeScript</title>
 		<script src="js/graphing.js"></script>
 		<script src="js/dataset-manager.js" defer></script>	<!-- see src/dataset.ts for actual comments! TODO: enable changing out the dataset for custom string[]s -->
-		<!--
-		<script src="js/datasets/english100.js" defer></script>
-		<script src="js/datasets/english1k.js" defer></script>
-		<script src="js/datasets/latin1k.js" defer></script>
-		-->
+		<script src="js/options.js" defer></script>
 		<script src="js/main.js" defer></script> <!-- see src/main.ts for actual comments! -->
 		<link rel="stylesheet" href="css/style.css" />
 		<link rel="icon" type="image/x-icon" href="favicon.ico">
 	</head>
 	<body>
 		
-		<div class="display-text center-text">
+		<div class="display-text center-text focus-hide">
 			<h1><span id="preTypescriptText">mini</span><span id="typescriptText">TypeScript</span></h1>
 		</div>
 		<div class="typing typing-wrapper">
@@ -25,7 +21,7 @@
 		</div>
 		<br />
 		<br />
-		<div class="display display-text display-wrapper center-text">
+		<div class="display display-text display-wrapper center-text focus-hide">
 			<span class="cps-wrapper">
 				CPM: <span id="charPerSecond">0</span>
 			</span> |
@@ -80,6 +76,17 @@
 					<summary>stats</summary>
 					<div class="outline-block graph-stats-wrapper">
 						<canvas id="statsGraph" class="graph graph-stats"></canvas>
+					</div>
+				</details>
+			</div>
+			<div class="popup options center-text">
+				<details>
+					<summary>options</summary>
+					<div class="options-menu">
+						<div class="type-picker-field display-text">
+							<input class="check-picker" type="checkbox" id="focusOnTypeToggle" checked />
+							<label class="small-label" for="focusOnTypeToggle">focus on starting test</label>
+						</div>
 					</div>
 				</details>
 			</div>
